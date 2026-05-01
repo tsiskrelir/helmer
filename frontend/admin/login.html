@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Kanzlei Tieben</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .login-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 60px);
+    }
+    .login-box {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 40px 36px 32px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+    .login-box h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
+    .login-field {
+      margin-bottom: 16px;
+    }
+    .login-field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-bottom: 6px;
+    }
+    .login-field input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 14px;
+      background: var(--bg-white);
+      box-sizing: border-box;
+    }
+    .login-field input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .login-btn {
+      width: 100%;
+      padding: 11px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .login-btn:hover {
+      background: var(--accent-hover);
+    }
+    .login-error {
+      color: var(--danger);
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-container">
+    <header class="admin-header">
+      <h1>Kanzlei Tieben &middot; Intake Admin</h1>
+    </header>
+    <div class="login-wrapper">
+      <div class="login-box">
+        <h2>Anmeldung</h2>
+        <form id="login-form">
+          <div class="login-field">
+            <label>Benutzername</label>
+            <input type="text" id="username" autocomplete="username" required />
+          </div>
+          <div class="login-field">
+            <label>Passwort</label>
+            <input type="password" id="password" autocomplete="current-password" required />
+          </div>
+          <button type="submit" class="login-btn">Anmelden</button>
+          <p class="login-error" id="login-error"></p>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    const API_BASE_URL = window.API_BASE_URL || '/api/admin';
+
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById('login-error');
+      errEl.style.display = 'none';
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await fetch(API_BASE_URL + '/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password }),
+        });
+        const data = await res.json();
+        if (res.ok && data.token) {
+          localStorage.setItem('admin_token', data.token);
+          window.location.href = 'index.html';
+        } else {
+          errEl.textContent = data.message || 'Anmeldung fehlgeschlagen';
+          errEl.style.display = 'block';
+        }
+      } catch {
+        errEl.textContent = 'Verbindungsfehler. Bitte versuchen Sie es erneut.';
+        errEl.style.display = 'block';
+      }
+    });
+
+    // If already logged in, redirect
+    (async () => {
+      const token = localStorage.getItem('admin_token');
+      if (!token) return;
+      try {
+        const res = await fetch(API_BASE_URL + '/verify', {
+          headers: { 'Authorization': 'Bearer ' + token },
+        });
+        const data = await res.json();
+        if (data.valid) window.location.href = 'index.html';
+      } catch {}
+    })();
+  </script>
+</body>
+</html>

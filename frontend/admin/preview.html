@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard Preview - Kanzlei Tieben</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+    .preview-banner {
+      background: #6B7B3A;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
+    .preview-banner a {
+      color: white;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="preview-banner">
+    Preview Mode - Backend läuft auf <a href="http://152.53.139.177:3003" target="_blank">http://152.53.139.177:3003</a>
+  </div>
+  
+  <!-- Admin Dashboard -->
+  <script>
+    // Set API base URL
+    window.API_BASE_URL = window.API_BASE_URL || '/api/admin';
+  </script>
+  
+  <!-- Include admin dashboard -->
+  <script src="app.js"></script>
+  <link rel="stylesheet" href="styles.css">
+  
+  <div class="admin-container">
+    <header class="admin-header">
+      <h1>Kanzlei Tieben &middot; Intake Admin</h1>
+      <div class="header-controls">
+        <label class="toggle-label" for="chatbot-toggle">
+          Chatbot Intake
+          <div class="toggle-switch">
+            <input type="checkbox" id="chatbot-toggle" checked />
+            <span class="toggle-slider"></span>
+          </div>
+        </label>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <!-- Inquiry List View -->
+      <div id="inquiry-list-view" class="view active">
+        <div class="toolbar">
+          <div class="search-filters">
+            <input type="text" id="search-input" placeholder="Suche nach Name, E-Mail, Thema..." />
+            <select id="status-filter">
+              <option value="">Alle Status</option>
+              <option value="new">Neu</option>
+              <option value="in_progress">In Bearbeitung</option>
+              <option value="completed">Abgeschlossen</option>
+              <option value="rejected">Abgelehnt</option>
+            </select>
+            <button id="search-btn">Suchen</button>
+          </div>
+          <div class="stats">
+            <span id="total-count">0</span> Anfragen gesamt
+          </div>
+        </div>
+
+        <div class="status-tabs">
+          <button class="tab active" data-status="">Alle</button>
+          <button class="tab" data-status="new">Neu</button>
+          <button class="tab" data-status="in_progress">In Bearbeitung</button>
+          <button class="tab" data-status="completed">Abgeschlossen</button>
+          <button class="tab" data-status="rejected">Abgelehnt</button>
+        </div>
+
+        <div class="inquiry-table-container">
+          <table class="inquiry-table">
+            <thead>
+              <tr>
+                <th>Datum</th>
+                <th>Name</th>
+                <th>Rechtsgebiet</th>
+                <th>Thema</th>
+                <th>Kanal</th>
+                <th>Status</th>
+                <th>Aktion</th>
+              </tr>
+            </thead>
+            <tbody id="inquiry-table-body">
+              <tr>
+                <td colspan="7" style="text-align: center; padding: 40px;">
+                  Lade Anfragen...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <button id="prev-page" disabled>Zurück</button>
+          <span id="page-info">Seite 1</span>
+          <button id="next-page">Weiter</button>
+        </div>
+      </div>
+
+      <!-- Inquiry Detail View -->
+      <div id="inquiry-detail-view" class="view">
+        <button id="back-btn" class="back-button">&larr; Zur&uuml;ck zur Liste</button>
+        
+        <div class="detail-layout">
+          <div class="detail-sidebar">
+            <div class="sidebar-card">
+              <div class="sidebar-card-header">
+                <div id="detail-status-badge"></div>
+                <div class="detail-meta-inline">
+                  <span id="detail-created"></span> &middot; <span id="detail-channel"></span>
+                </div>
+              </div>
+              <div class="sidebar-card-body">
+                <div id="contact-info"></div>
+              </div>
+            </div>
+
+            <div class="sidebar-card">
+              <h3 class="sidebar-label">Falldetails</h3>
+              <div class="sidebar-field">
+                <label>Rechtsgebiet</label>
+                <select id="legal-area-select">
+                  <option value="Arbeitsrecht">Arbeitsrecht</option>
+                  <option value="Mietrecht">Mietrecht</option>
+                  <option value="Sonstiges">Sonstiges</option>
+                </select>
+              </div>
+              <div class="sidebar-field">
+                <label>Thema</label>
+                <select id="legal-topic-select"></select>
+              </div>
+              <div class="sidebar-field">
+                <label>Zuweisung</label>
+                <select id="case-worker-select">
+                  <option value="374">Helmer Tieben</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="sidebar-card">
+              <h3 class="sidebar-label">Aktionen</h3>
+              <div class="sidebar-field">
+                <label>Status</label>
+                <div class="sidebar-action-row">
+                  <select id="status-select">
+                    <option value="new">Neu</option>
+                    <option value="in_progress">In Bearbeitung</option>
+                    <option value="completed">Abgeschlossen</option>
+                    <option value="rejected">Abgelehnt</option>
+                  </select>
+                  <button id="update-status-btn" class="btn-primary btn-sm">Speichern</button>
+                </div>
+              </div>
+              <button id="export-kleos-btn" class="btn-export">Nach Kleos exportieren</button>
+            </div>
+          </div>
+
+          <div class="detail-main">
+            <div class="detail-tabs">
+              <button class="detail-tab active" data-tab="conversation">Unterhaltung</button>
+              <button class="detail-tab" data-tab="documents">Dokumente</button>
+            </div>
+
+            <div id="conversation-tab" class="detail-tab-content active">
+              <div class="conversation-container" id="conversation-container"></div>
+            </div>
+
+            <div id="documents-tab" class="detail-tab-content">
+              <div class="documents-list" id="documents-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Custom modal & toast -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-body" id="modal-body"></div>
+      <div class="modal-actions" id="modal-actions"></div>
+    </div>
+  </div>
+  <div id="toast-container" class="toast-container"></div>
+</body>
+</html>
+

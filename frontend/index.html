@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kleos Intake System - Kanzlei Tieben</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #3D3D3D;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      background: #fff;
+      padding: 48px;
+      border-radius: 4px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+      text-align: center;
+      max-width: 480px;
+      width: 100%;
+    }
+    h1 { color: #3D3D3D; margin-bottom: 4px; font-size: 22px; font-weight: 600; }
+    .subtitle { color: #6B7B3A; margin-bottom: 32px; font-size: 14px; font-weight: 500; }
+    .links { display: flex; flex-direction: column; gap: 12px; }
+    a {
+      display: block; padding: 14px 24px; text-decoration: none;
+      border-radius: 4px; font-weight: 500; font-size: 14px;
+      transition: background 0.2s; text-align: left;
+    }
+    .admin-link { background: #3D3D3D; color: #fff; border: 1px solid #3D3D3D; }
+    .admin-link:hover { background: #555; }
+    .widget-link { background: #6B7B3A; color: #fff; border: 1px solid #6B7B3A; }
+    .widget-link:hover { background: #5A6930; }
+    .link-description { font-size: 12px; margin-top: 4px; font-weight: 400; color: rgba(255,255,255,0.6); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Kleos Intake System</h1>
+    <p class="subtitle">Rechtsanwaltskanzlei Tieben</p>
+    <div class="links">
+      <a href="/admin/" class="admin-link">
+        Admin Dashboard
+        <div class="link-description">Anfragen verwalten und nach Kleos exportieren</div>
+      </a>
+      <a href="/widget/preview.html" class="widget-link">
+        Chatbot Vorschau
+        <div class="link-description">Chatbot-Widget testen</div>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

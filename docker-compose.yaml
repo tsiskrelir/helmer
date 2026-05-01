@@ -1,0 +1,85 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: kleos-intake-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: kleos_intake
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: kleos-intake-backend
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/kleos_intake?schema=public
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: kleos_intake
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      KLEOS_API_BASE_URL: ${KLEOS_API_BASE_URL}
+      KLEOS_CLIENT_ID: ${KLEOS_CLIENT_ID}
+      KLEOS_CLIENT_SECRET: ${KLEOS_CLIENT_SECRET}
+      KLEOS_TOKEN_URL: ${KLEOS_TOKEN_URL:-https://ids.kleosapp.com/KLEOSIDENTITYv4/connect/token}
+      KLEOS_CASE_TYPE_ARBEITSRECHT: ${KLEOS_CASE_TYPE_ARBEITSRECHT:-103}
+      KLEOS_CASE_TYPE_MIETRECHT: ${KLEOS_CASE_TYPE_MIETRECHT:-108}
+      KLEOS_CASE_TYPE_SONSTIGES: ${KLEOS_CASE_TYPE_SONSTIGES:-56}
+      KLEOS_DOCUMENT_FOLDER_ALL: ${KLEOS_DOCUMENT_FOLDER_ALL:-3}
+      KLEOS_RESPONSIBLE_LAWYER_ID: ${KLEOS_RESPONSIBLE_LAWYER_ID:-374}
+      IMAP_HOST: ${IMAP_HOST}
+      IMAP_PORT: ${IMAP_PORT:-993}
+      IMAP_SECURE: ${IMAP_SECURE:-true}
+      IMAP_USERNAME: ${IMAP_USERNAME}
+      IMAP_PASSWORD: ${IMAP_PASSWORD}
+      IMAP_POLL_INTERVAL_MINUTES: ${IMAP_POLL_INTERVAL_MINUTES:-0.5}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini}
+      UPLOAD_DIR: /app/uploads
+      MAX_FILE_SIZE_MB: ${MAX_FILE_SIZE_MB:-10}
+      ALLOWED_FILE_TYPES: ${ALLOWED_FILE_TYPES:-pdf,doc,docx,jpg,jpeg,png}
+      ADMIN_USERNAME: ${ADMIN_USERNAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET:-change_this_in_production}
+      GDPR_CONSENT_TEXT: ${GDPR_CONSENT_TEXT}
+      DATA_RETENTION_DAYS: ${DATA_RETENTION_DAYS:-30}
+      FRONTEND_URL: http://localhost:3001
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./backend/logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: kleos-intake-frontend
+    ports:
+      - "3001:80"
+    volumes:
+      - ./frontend/admin:/usr/share/nginx/html/admin
+      - ./frontend/widget:/usr/share/nginx/html/widget
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+

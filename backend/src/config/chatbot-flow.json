@@ -1,0 +1,219 @@
+{
+  "start": {
+    "message": "Willkommen bei der Kanzlei Tieben. Ich unterstütze Sie dabei, Ihr Anliegen schnell juristisch einzuordnen. Worum geht es bei Ihnen?",
+    "type": "choice",
+    "options": [
+      { "label": "Kündigung Arbeitsvertrag", "next": "kuendigung_arbeitsvertrag_start" },
+      { "label": "Abfindung verhandeln", "next": "abfindung_start" },
+      { "label": "Abmahnung erhalten", "next": "abmahnung_start" },
+      { "label": "Probleme mit dem Vermieter / Mietkündigung", "next": "kuendigung_mietvertrag_start" },
+      { "label": "Räumungsklage", "next": "raeumungsklage_start" },
+      { "label": "Sonstiges Anliegen", "next": "sonstiges_start" }
+    ]
+  },
+  "kuendigung_arbeitsvertrag_start": {
+    "message": "Wann haben Sie die Kündigung erhalten? (Datum)",
+    "type": "input",
+    "inputType": "date",
+    "next": "kuendigung_arbeitsvertrag_art"
+  },
+  "kuendigung_arbeitsvertrag_art": {
+    "message": "Welche Art Kündigung liegt vor?",
+    "type": "choice",
+    "options": [
+      { "label": "Ordentliche Kündigung", "next": "kuendigung_arbeitsvertrag_beschaeftigung" },
+      { "label": "Fristlose Kündigung", "next": "kuendigung_arbeitsvertrag_beschaeftigung" },
+      { "label": "Änderungskündigung", "next": "kuendigung_arbeitsvertrag_beschaeftigung" },
+      { "label": "Unsicher", "next": "kuendigung_arbeitsvertrag_beschaeftigung" }
+    ]
+  },
+  "kuendigung_arbeitsvertrag_beschaeftigung": {
+    "message": "Waren Sie länger als 6 Monate im Betrieb beschäftigt?",
+    "type": "choice",
+    "options": [
+      { "label": "Ja", "next": "kuendigung_arbeitsvertrag_mitarbeiter" },
+      { "label": "Nein", "next": "kuendigung_arbeitsvertrag_mitarbeiter" },
+      { "label": "Weiß nicht", "next": "kuendigung_arbeitsvertrag_mitarbeiter" }
+    ]
+  },
+  "kuendigung_arbeitsvertrag_mitarbeiter": {
+    "message": "Wie viele Mitarbeiter hat Ihr Arbeitgeber ungefähr?",
+    "type": "choice",
+    "options": [
+      { "label": "Weniger als 10", "next": "file_upload_kuendigung" },
+      { "label": "Mehr als 10", "next": "file_upload_kuendigung" },
+      { "label": "Unsicher", "next": "file_upload_kuendigung" }
+    ]
+  },
+  "file_upload_kuendigung": {
+    "message": "Bitte laden Sie Ihre Kündigung hoch (falls vorhanden).",
+    "type": "file",
+    "required": false,
+    "next": "contact_form"
+  },
+  "abfindung_start": {
+    "message": "Was ist der Hintergrund Ihres Abfindungswunsches?",
+    "type": "choice",
+    "options": [
+      { "label": "Ich wurde gekündigt", "next": "abfindung_dauer" },
+      { "label": "Ich überlege selbst zu kündigen", "next": "abfindung_dauer" },
+      { "label": "Umstrukturierung / Aufhebungsvertrag", "next": "abfindung_dauer" },
+      { "label": "Sonstiges", "next": "abfindung_dauer" }
+    ]
+  },
+  "abfindung_dauer": {
+    "message": "Wie lange arbeiten Sie bereits im Unternehmen?",
+    "type": "input",
+    "inputType": "text",
+    "next": "abfindung_gehalt"
+  },
+  "abfindung_gehalt": {
+    "message": "Wie hoch ist Ihr letzter Monatsverdienst (brutto)?",
+    "type": "input",
+    "inputType": "text",
+    "next": "abfindung_angebot"
+  },
+  "abfindung_angebot": {
+    "message": "Haben Sie bereits ein Angebot erhalten?",
+    "type": "choice",
+    "options": [
+      { "label": "Ja", "next": "file_upload_abfindung" },
+      { "label": "Nein", "next": "contact_form" }
+    ]
+  },
+  "file_upload_abfindung": {
+    "message": "Bitte laden Sie es hoch.",
+    "type": "file",
+    "required": false,
+    "next": "contact_form"
+  },
+  "abmahnung_start": {
+    "message": "Worum geht es in der Abmahnung?",
+    "type": "choice",
+    "options": [
+      { "label": "Verhalten", "next": "abmahnung_datum" },
+      { "label": "Pflichtverletzung", "next": "abmahnung_datum" },
+      { "label": "Fehlzeiten", "next": "abmahnung_datum" },
+      { "label": "Leistung", "next": "abmahnung_datum" },
+      { "label": "Sonstiges / unklar", "next": "abmahnung_datum" }
+    ]
+  },
+  "abmahnung_datum": {
+    "message": "Wann haben Sie die Abmahnung erhalten?",
+    "type": "input",
+    "inputType": "date",
+    "next": "file_upload_abmahnung"
+  },
+  "file_upload_abmahnung": {
+    "message": "Bitte laden Sie die Abmahnung hoch.",
+    "type": "file",
+    "required": false,
+    "next": "contact_form"
+  },
+  "kuendigung_mietvertrag_start": {
+    "message": "Was trifft auf Sie zu?",
+    "type": "choice",
+    "options": [
+      { "label": "Ich habe eine Kündigung erhalten", "next": "mietvertrag_datum" },
+      { "label": "Ich möchte selbst kündigen", "next": "mietvertrag_freitext" },
+      { "label": "Streit über Miete / Mängel", "next": "mietvertrag_freitext" },
+      { "label": "Sonstiges Wohnproblem", "next": "mietvertrag_freitext" }
+    ]
+  },
+  "mietvertrag_datum": {
+    "message": "Wann wurde die Kündigung zugestellt?",
+    "type": "input",
+    "inputType": "date",
+    "next": "file_upload_mietvertrag"
+  },
+  "mietvertrag_freitext": {
+    "message": "Bitte schildern Sie kurz den Sachverhalt.",
+    "type": "input",
+    "inputType": "text",
+    "next": "file_upload_mietvertrag_optional"
+  },
+  "file_upload_mietvertrag": {
+    "message": "Bitte laden Sie das Schreiben hoch.",
+    "type": "file",
+    "required": false,
+    "next": "contact_form"
+  },
+  "file_upload_mietvertrag_optional": {
+    "message": "Möchten Sie Dokumente hochladen?",
+    "type": "choice",
+    "options": [
+      { "label": "Ja", "next": "file_upload_mietvertrag" },
+      { "label": "Nein", "next": "contact_form" }
+    ]
+  },
+  "raeumungsklage_start": {
+    "message": "Haben Sie bereits eine Räumungsklage erhalten?",
+    "type": "choice",
+    "options": [
+      { "label": "Ja", "next": "raeumungsklage_datum" },
+      { "label": "Nein (aber droht)", "next": "raeumungsklage_freitext" }
+    ]
+  },
+  "raeumungsklage_datum": {
+    "message": "Bitte geben Sie das Zustellungsdatum an.",
+    "type": "input",
+    "inputType": "date",
+    "next": "file_upload_raeumungsklage"
+  },
+  "raeumungsklage_freitext": {
+    "message": "Bitte schildern Sie die aktuelle Situation.",
+    "type": "input",
+    "inputType": "text",
+    "next": "file_upload_raeumungsklage_optional"
+  },
+  "file_upload_raeumungsklage": {
+    "message": "Bitte laden Sie die Klage oder Schreiben hoch.",
+    "type": "file",
+    "required": false,
+    "next": "contact_form"
+  },
+  "file_upload_raeumungsklage_optional": {
+    "message": "Möchten Sie Dokumente hochladen?",
+    "type": "choice",
+    "options": [
+      { "label": "Ja", "next": "file_upload_raeumungsklage" },
+      { "label": "Nein", "next": "contact_form" }
+    ]
+  },
+  "sonstiges_start": {
+    "message": "Bitte beschreiben Sie Ihr Anliegen kurz.",
+    "type": "input",
+    "inputType": "text",
+    "next": "sonstiges_upload"
+  },
+  "sonstiges_upload": {
+    "message": "Möchten Sie Dokumente hochladen?",
+    "type": "choice",
+    "options": [
+      { "label": "Ja", "next": "file_upload_sonstiges" },
+      { "label": "Nein", "next": "contact_form" }
+    ]
+  },
+  "file_upload_sonstiges": {
+    "message": "Bitte laden Sie das Dokument hoch.",
+    "type": "file",
+    "required": false,
+    "next": "contact_form"
+  },
+  "contact_form": {
+    "message": "Vielen Dank. Damit wir Ihnen sofort weiterhelfen können, benötige ich Ihre Kontaktdaten.",
+    "type": "contact",
+    "fields": ["name", "email", "phone"],
+    "next": "gdpr_consent"
+  },
+  "gdpr_consent": {
+    "message": "Ich stimme zu, dass meine Daten zum Zweck der Bearbeitung und Beantwortung meiner rechtlichen Anfrage verarbeitet werden. Meine Daten werden nach der Übertragung an die Kanzlei oder nach 30 Tagen gelöscht, je nachdem, was früher eintritt.",
+    "type": "consent",
+    "next": "end"
+  },
+  "end": {
+    "message": "Vielen Dank! Herr Rechtsanwalt Tieben meldet sich schnellstmöglich.",
+    "type": "end"
+  }
+}
+

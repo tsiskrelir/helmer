@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Preview - Kanzlei Tieben</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background: #f5f5f5;
+        }
+        .preview-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #3D3D3D;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #6B7B3A;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        .info {
+            background: #f0f3e8;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #6B7B3A;
+        }
+        .info code {
+            background: #fff;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        h2 { color: #3D3D3D; font-size: 18px; }
+        pre {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <h1>Chatbot Widget Preview</h1>
+        <div class="subtitle">Rechtsanwaltskanzlei Tieben &middot; mth-partner.de</div>
+
+        <div class="info">
+            <strong>Anleitung:</strong><br>
+            1. Backend läuft auf <code>http://152.53.139.177:3003</code><br>
+            2. Chatbot-Icon erscheint unten rechts<br>
+            3. Klicken Sie auf das Icon, um den Chat zu öffnen<br>
+            4. Testen Sie den gesamten Gesprächsablauf
+        </div>
+
+        <h2>WordPress-Integration:</h2>
+        <pre>&lt;script&gt;
+  window.CHATBOT_API_URL = 'https://chat.mth-partner.de/api/chatbot';
+&lt;/script&gt;
+&lt;script src="https://chat.mth-partner.de/widget/chatbot.js"&gt;&lt;/script&gt;</pre>
+
+        <p style="color: #666; font-size: 14px;">Der Chatbot wird unten rechts als schwebendes Icon angezeigt.</p>
+    </div>
+
+    <!-- Chatbot Widget -->
+    <script>
+        window.CHATBOT_API_URL = 'http://152.53.139.177:3003/api/chatbot';
+    </script>
+    <script src="/widget/chatbot.js"></script>
+</body>
+</html>
